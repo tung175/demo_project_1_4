@@ -17,7 +17,7 @@ class CartController extends Controller
         $data = $request->all();
         $coupon = Coupon::where('coupon_code',$data['coupon'])->first();
         if($coupon){
-            $count_coupon = $coupon->count();
+            $count_coupon = $coupon->coupon_number;
             if($count_coupon>0){
                 $coupon_session = Session::get('coupon');
                 if($coupon_session==true){
@@ -42,6 +42,8 @@ class CartController extends Controller
                 }
                 Session::save();
                 return redirect()->back()->with('message','Thêm mã giảm giá thành công');
+            } else {
+                return redirect()->back()->with('error','Mã giảm giá không đúng hoặc đã hết');
             }
 
         }else{

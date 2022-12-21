@@ -17,6 +17,7 @@
       <meta property="og:title" content="{{$meta_title}}" />
       <meta property="og:url" content="{{$url_canonical}}" />
       <meta property="og:type" content="website" /> --}}
+      <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!--//-------Seo--------->
     <title>{{$meta_title}}</title>
     <link href="{{asset('public/frontend/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -456,7 +457,13 @@
     <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v6.0&appId=2339123679735877&autoLogAppEvents=1"></script>
 
-
+<script type="text/javascript">
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+</script>
     <script type="text/javascript">
 
           $(document).ready(function(){
@@ -481,6 +488,10 @@
                         var shipping_phone = $('.shipping_phone').val();
                         var shipping_notes = $('.shipping_notes').val();
                         var shipping_method = $('.payment_select').val();
+
+                        if (!shipping_email || !shipping_name || !shipping_address || !shipping_phone || !shipping_notes || !shipping_method) {
+                            return swal("Cảnh báo", "Làm ơn hoàn thành đầy đủ các trường", "warning");
+                        }
                         var order_fee = $('.order_fee').val();
                         var order_coupon = $('.order_coupon').val();
                         var _token = $('input[name="_token"]').val();

@@ -34,6 +34,11 @@ class CouponController extends Controller
     public function insert_coupon_code(Request $request){
     	$data = $request->all();
 
+		$couponExist = Coupon::where('coupon_code', '=', $data['coupon_code'])->first();
+		if ($couponExist) {
+			Session::put('message','Mã giảm giá đã tồn tại');
+        	return Redirect::to('insert-coupon');
+		}
     	$coupon = new Coupon;
 
     	$coupon->coupon_name = $data['coupon_name'];

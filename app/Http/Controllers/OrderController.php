@@ -15,12 +15,9 @@ use PDF;
 
 class OrderController extends Controller
 {
-	public function order_code(Request $request ,$order_code){
-		$order = Order::where('order_code',$order_code)->first();
+	public function order_code(Request $request){
+		$order = Order::where('order_code',$request->id)->first();
 		$order->delete();
-		 Session::put('message','Xóa đơn hàng thành công');
-        return redirect()->back();
-
 	}
 	public function update_qty(Request $request){
 		$data = $request->all();

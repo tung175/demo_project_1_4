@@ -54,9 +54,9 @@
               <a href="{{URL::to('/view-order/'.$ord->order_code)}}" class="active styling-edit" ui-toggle-class="">
                 <i class="fa fa-eye text-success text-active"></i></a>
 
-              <a onclick="delete()" data-id="{{$ord->order_code}}" class="active styling-edit" ui-toggle-class="" id="delete">
+              <div style='cursor:pointer' data-id="{{$ord->order_code}}" class="active styling-edit" ui-toggle-class="" id="delete">
                 <i class="fa fa-times text-danger text"></i>
-              </a>
+              </div>
 
             </td>
           </tr>
@@ -87,8 +87,25 @@
   $(document).ready(function() {
    $(document).on('click', '#delete', function() {
     let id = $(this).data("id");
-    
+    var token = $("meta[name='csrf-token']").attr("content");
+    if (confirm('Bạn chắc chắn muốn xoá?') == false) {
+      return;
+    } 
+   $.ajax(
+   {
+       url: "/delete-order",
+       type: 'POST',
+       data: {
+           "id": id,
+           "_token": "{{ csrf_token() }}",
+       },
+       success: function (){
+           console.log("deleted");
+           location.reload();
+       }
+   });
    })
+
   })
 </script>
 @endpush

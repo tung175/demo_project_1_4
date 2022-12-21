@@ -18,6 +18,7 @@ use App\Slider;
 use App\Shipping;
 use App\Order;
 use App\OrderDetails;
+use App\Coupon;
 
 class CheckoutController extends Controller
 {
@@ -34,10 +35,15 @@ class CheckoutController extends Controller
          $shipping->shipping_method = $data['shipping_method'];
          $shipping->save();
          $shipping_id = $shipping->shipping_id;
-
+         
          $checkout_code = substr(md5(microtime()),rand(0,26),5);
-
-  
+         
+         $coupon = Coupon::where('coupon_code', '=', $data['order_coupon'])->first();
+         if ($coupon && $coupon->coupon_number > 0) {
+            $coupon->coupon_number -= 1;
+            $coupon->save();
+         }
+         
          $order = new Order;
          $order->customer_id = Session::get('customer_id');
          $order->shipping_id = $shipping_id;
@@ -61,6 +67,7 @@ class CheckoutController extends Controller
                 $order_details->save();
             }
          }
+
          Session::forget('coupon');
          Session::forget('fee');
          Session::forget('cart');
