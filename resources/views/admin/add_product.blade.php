@@ -16,8 +16,8 @@
                         <div class="panel-body">
 
                             <div class="position-center">
-                                <form role="form" action="{{URL::to('/save-product')}}" method="post" enctype="multipart/form-data">
-                                    {{ csrf_field() }}
+                                <form role="form" action="{{ route('save.product') }}" method="post" enctype="multipart/form-data">
+                                    @csrf
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Tên sản phẩm</label>
                                     <input type="text" data-validation="length" data-validation-length="min10" data-validation-error-msg="Làm ơn điền ít nhất 10 ký tự" name="product_name" class="form-control " id="slug" placeholder="Tên danh mục" onkeyup="ChangeToSlug();"> 
